@@ -7,8 +7,11 @@ from aiogram.filters import Command
 from core.middlewares.dbmiddleware import DbSession
 from core.settings import settings
 from core.utils.dbconnect import create_pool
-from core.handlers.basic import start_chat
-from core.handlers.profile import return_profile
+from core.utils.statesform import StepsForm
+from core.handlers.basic import start_chat, go_back
+from core.handlers.profile import return_profile, change_username, get_new_username
+from core.handlers.give import give_score
+from core.handlers.interactives import get_interactive
 
 async def start():
     logging.basicConfig(
@@ -23,9 +26,15 @@ async def start():
 
     dp = Dispatcher()
     dp.update.middleware.register(DbSession(pull_connect))
-    # dp.startup.register(start_bot)
     dp.message.register(start_chat, Command(commands=['start']))
-    dp.message.register(return_profile, Command(commands=['settings']))
+    dp.message.register(give_score, Command(commands=['give']))
+
+    dp.message.register(return_profile, F.text == 'Профиль')
+    dp.message.register(change_username, F.text == 'Поменять имя')
+    dp.message.register(go_back, F.text == 'Назад')
+    dp.message.register(get_interactive, F.text == 'Интерактивы)))')
+
+    dp.message.register(get_new_username, StepsForm.GET_NAME )
 
     try:
         await dp.start_polling(bot, skip_updates=True)

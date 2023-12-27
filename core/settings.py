@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 from environs import Env
 
-
 @dataclass
 class Bots:
     bot_token: str
@@ -22,6 +21,7 @@ class DataBase:
 class Settings:
     bots: Bots
     databases: DataBase
+    admins: list
 
 
 def get_settings(path: str):
@@ -39,7 +39,8 @@ def get_settings(path: str):
             host=env.str('HOST'),
             port=env.int('PORT'),
             command_timeout=env.int('TIMEOUT'),
-        )
+        ),
+        admins=[int(i) for i in env.str('ADMINS').split()]
     )
 
 
