@@ -1,12 +1,17 @@
 from aiogram.types import Message
 
+from core.handlers import (
+    WELCOME_MESSAGE_TEXT,
+    MAIN_MENU_MESSAGE_TEXT,
+)
 from core.utils.dbconnect import Request
-from core.keyboards.menu import menu_keyboard
+from core.utils.utils import get_keyboard
+
 
 async def start_chat(message: Message, request: Request):
     await message.reply(
-        'ДОбро пожаловать на Новый год в ПУНКЕ!!!! ВСЕХ С НГ!!',
-        reply_markup=menu_keyboard,
+        WELCOME_MESSAGE_TEXT,
+        reply_markup=await get_keyboard(message.from_user.id),
     )
     await request.register_user(
         message.from_user.id,
@@ -15,4 +20,4 @@ async def start_chat(message: Message, request: Request):
 
 
 async def go_back(message: Message):
-    await message.answer('Главное меню', reply_markup=menu_keyboard)
+    await message.answer(MAIN_MENU_MESSAGE_TEXT, reply_markup=await get_keyboard(message.from_user.id))

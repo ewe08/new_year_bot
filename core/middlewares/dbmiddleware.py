@@ -1,6 +1,6 @@
 from typing import Callable, Awaitable, Dict, Any
 
-import asyncpg
+import aiomysql
 from aiogram import BaseMiddleware
 from aiogram.types import Message
 
@@ -8,7 +8,7 @@ from core.utils.dbconnect import Request
 
 
 class DbSession(BaseMiddleware):
-    def __init__(self, connector: asyncpg.pool.Pool):
+    def __init__(self, connector: aiomysql.pool.Pool):
         super().__init__()
         self.connector = connector
 

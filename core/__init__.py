@@ -1,0 +1,7 @@
+INTERACTIVE_BUTTON_NAME = 'Программа на сегодня'
+BACK_BUTTON_NAME = 'Назад'
+PROFILE_BUTTON_NAME = 'Профиль'
+GIVE_SCORE_BUTTON_NAME = 'Выдать баллы'
+TAKE_SCORE_BUTTON_NAME = 'Забрать баллы'
+CHANGE_NAME_BUTTON_NAME = 'Поменять имя'
+BUY_TICKET_BUTTON_NAME = 'Купить лотерейный билет (15 баллов = 1 билетик)'

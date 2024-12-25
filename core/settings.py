@@ -9,38 +9,47 @@ class Bots:
 
 @dataclass
 class DataBase:
-    user: str
-    password: str
+    """Настройки для базы данных"""
+    host:     str
+    port:     int
     database: str
-    host: str
-    port: int
-    command_timeout: int
+    user:     str
+    password: str
+    ssl:      str
 
 
 @dataclass
 class Settings:
-    bots: Bots
+    bots:      Bots
     databases: DataBase
-    admins: list
+    admins:    set
+    givers:    set
+    callers:   set
 
 
 def get_settings(path: str):
     env = Env()
     env.read_env(path)
 
+    admins = {int(i) for i in env.str('ADMINS').split()}
+    givers = {int(i) for i in env.str('GIVERS').split()}
+    callers = {int(i) for i in env.str('CALLERS').split()}
+
     return Settings(
         bots=Bots(
             bot_token=env.str('TOKEN'),
         ),
         databases=DataBase(
-            user=env.str('USER'),
-            password=env.str('PASSWORD'),
-            database=env.str('DATABASE'),
             host=env.str('HOST'),
             port=env.int('PORT'),
-            command_timeout=env.int('TIMEOUT'),
+            database=env.str('DATABASE'),
+            user=env.str('DBUSER'),
+            password=env.str('PASSWORD'),
+            ssl=env.str('PATH_TO_SSL'),
         ),
-        admins=[int(i) for i in env.str('ADMINS').split()]
+        admins=admins,
+        givers=givers | admins,
+        callers=callers | admins,
     )
 
 
